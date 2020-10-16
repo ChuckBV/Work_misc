@@ -3,6 +3,8 @@
 library(tidyverse)
 library(stringi)
 
+#-- 1. Output a list of email addresses to stick in a To field --------------
+
 ### Import and work with roster
 
 mlist <- read_csv("prac_list_2020.csv",
@@ -41,5 +43,29 @@ myselfi <- ("c_s_burks@yahoo.com;r.dominica@gmail.com")
 noquote(myselfi) #c_s_burks@yahoo.com;r.dominica@gmail.com
 #-- Putting the string above in Outlook sends to both emails
 
+#-- 2. Use response list to narrow the data frame ---------------------------
+
+### Import response
+response <- read_csv("doodle.csv")
+
+### Verify how Bob Van Steenwyk's name is handled in the roster list
+filter(mlist,str_detect(lname,"Van"))
+# A tibble: 1 x 4
+#   name                email                 fname  lname       
+#   <chr>               <chr>                 <chr>  <chr>       
+# 1 Robert Van Steenwyk bobvanst@berkeley.edu Robert Van Steenwyk
+
+filter(mlist,str_detect(lname,"Norene"))
 
 
+filter(response,str_detect(lname,"Norene"))
+# A tibble: 1 x 3
+# fname lname  Response
+# <chr> <chr>  <chr>   
+# 1 Davin Norene No  
+
+
+### Use response df to filter roster df
+left_join(response,mlist, by = "lname") %>% 
+  group_by(name) %>% 
+  summarise()

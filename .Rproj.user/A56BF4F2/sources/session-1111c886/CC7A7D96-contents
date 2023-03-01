@@ -30,16 +30,33 @@ p1 <- ggplot(sepal_means, aes(x = Species, y = mn)) +
   geom_col() +
   geom_errorbar(aes(ymin = mn - sem, 
                     ymax = mn + sem),
-                width = 0.5)
+                width = 0.5) 
+
 p1
 
 ggsave(filename = "iris-sepal-means-default.jpg", plot = p1, device = "jpg",  
        dpi = 300, width = 2.83, height = 2.1225, units = "in")
 
-# theme(axis.text.x = element_text(color = "black", size = 9),
-#       axis.text.y = element_text(color = "black", size = 9),
-#       axis.title.x = element_text(color = "black", size = 12),
-#       axis.title.y = element_text(color = "black", size = 12),
-#       legend.title = element_text(color = "black", size = 9),
-#       legend.text = element_text(color = "black", size = 8),
-#       legend.position = c(0.3, 0.8))
+# Place theme in a function and use it
+#  --- See https://www.r-bloggers.com/2023/01/tips-for-organising-your-r-code/,
+#  --- part 3
+
+theme_burks_halfwidth <- function(){
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(color = "black", size = 9),
+    axis.text.y = element_text(color = "black", size = 9),
+    axis.title.x = element_text(color = "black", size = 12),
+    axis.title.y = element_text(color = "black", size = 12),
+    legend.title = element_text(color = "black", size = 9),
+    legend.text = element_text(color = "black", size = 8))
+}
+
+p2 <- p1 +
+  theme_burks_halfwidth() 
+
+p2
+
+ggsave(filename = "iris-sepal-means-w-formatting.jpg", plot = p2, device = "jpg",
+       path = "./2023-02-13-ggplot-cheat-sheets",
+       dpi = 300, width = 2.83, height = 2.1225, units = "in")

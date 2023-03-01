@@ -17,7 +17,7 @@ leafroller (not a fly). Factors are attractant and lure age.
 
 ### 2021-04-17-hacu
 
-Use of R for basic fly and text manipulation; demonstrates reading from and
+Use of R for basic file and text manipulation; demonstrates reading from and
 writing to local directories that synch with the USDA OneDrive cloud storage.
 
 ### 2023-02-09-read-hobo-dat
@@ -27,3 +27,4 @@ working with datetime (POSIXct), and plotting the data in a useful manner
 
 ### 2023-02-13-ggplot-cheat-cheats
 
+Create example scripts for commonly used plot types in ggplot2

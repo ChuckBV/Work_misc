@@ -23,7 +23,10 @@ writing to local directories that synch with the USDA OneDrive cloud storage.
 ### 2023-02-09-read-hobo-dat
 
 Demonstrates reading HoboTemp data logger output from xlsx and csv files,
-working with datetime (POSIXct), and plotting the data in a useful manner
+working with datetime (POSIXct), and plotting the data in a useful manner.
+Script1 demonstrates when working from Github, and script2 demonstrates 
+use when the script and all input and output files are kept on the Windows
+Desktop
 
 ### 2023-02-13-ggplot-cheat-cheats
 

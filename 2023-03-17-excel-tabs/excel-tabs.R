@@ -50,3 +50,7 @@ list2env(y,globalenv())
 ls()
 # [1] "irises"     "setosa"     "versicolor" "virginica"  "x"          "y"  
 
+##########################
+## Main event
+## https://www.r-bloggers.com/2019/08/creating-excel-workbooks-with-multiple-sheets-in-r/
+

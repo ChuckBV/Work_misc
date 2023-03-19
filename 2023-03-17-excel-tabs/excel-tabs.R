@@ -82,3 +82,9 @@ read_excel_allsheets <- function(filename, tibble = TRUE) {
   names(x) <- sheets
   x
 }
+
+## provides simple implementation for lapply and has accompanying YouTube
+## https://statisticsglobe.com/read-all-worksheets-of-excel-file-into-list-in-r
+
+## This r-blogger entry addresses how to approach this with lapply or with purr::map()
+## https://www.r-bloggers.com/2022/07/read-data-from-multiple-excel-sheets-and-convert-them-to-individual-data-frames/

@@ -8,6 +8,9 @@
 library(openxlsx)
 library(dplyr)
 
+# necessary work-around
+path_now <- "./2023-03-17-excel-tabs"
+
 #####################
 ## Using internal data set iris
 
@@ -43,14 +46,22 @@ y <- split(irises, irises$Species)
 y$setosa
 y$versicolor
 y$virginica
+    # -- Creates a list containing three named data frames
 
 ## Convert the list to three separate data frames 
 ## See https://stackoverflow.com/questions/13795526/return-elements-of-list-as-independent-objects-in-global-environment
-list2env(y,globalenv())
-ls()
-# [1] "irises"     "setosa"     "versicolor" "virginica"  "x"          "y"  
+# list2env(y,globalenv())
+# ls()
+# # [1] "irises"     "setosa"     "versicolor" "virginica"  "x"          "y"  
+    # Potentially useful, but not used in the present example
 
 ##########################
 ## Main event
 ## https://www.r-bloggers.com/2019/08/creating-excel-workbooks-with-multiple-sheets-in-r/
+## See also
+## https://www.r-bloggers.com/2022/02/export-data-frames-into-multiple-excel-sheets-in-r/
+
+openxlsx::write.xlsx(y, file = "./2023-03-17-excel-tabs/data.xlsx")
+   # -- Creates an Excel file with three sheets, each with the name of the
+   # -- corresponding data frame from the list
 

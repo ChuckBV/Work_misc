@@ -58,9 +58,7 @@ y$virginica
 ##########################
 ## Export 3 data frames to three sheets in a single spreadsheet document.
 ##
-## https://www.r-bloggers.com/2019/08/creating-excel-workbooks-with-multiple-sheets-in-r/
-## 
-## More immediately relevant
+## Working from a list of data frames, this is one short and simple function
 ## https://www.r-bloggers.com/2022/02/export-data-frames-into-multiple-excel-sheets-in-r/
 
 openxlsx::write.xlsx(y, file = "./2023-03-17-excel-tabs/data.xlsx")
@@ -70,4 +68,17 @@ openxlsx::write.xlsx(y, file = "./2023-03-17-excel-tabs/data.xlsx")
 ##########################
 ## Read 3 data frames from three sheets in a single spreadsheet document
 ##
-## https://www.r-bloggers.com/2019/08/creating-excel-workbooks-with-multiple-sheets-in-r/
+## Reading the sheets back required either base::lapply() or purr::map()
+
+## lapply method
+## https://stackoverflow.com/questions/12945687/read-all-worksheets-in-an-excel-workbook-into-an-r-list-with-data-frames
+
+
+read_excel_allsheets <- function(filename, tibble = TRUE) {
+  # Get the names of the sheets
+  sheets <- readxl::excel_sheets(filename)
+  x <- lapply(sheets, function(X) readxl::read_excel(filename, sheet = X))
+  if(!tibble) x <- lapply(x, as.data.frame)
+  names(x) <- sheets
+  x
+}

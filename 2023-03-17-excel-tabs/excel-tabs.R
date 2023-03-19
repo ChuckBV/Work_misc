@@ -56,12 +56,18 @@ y$virginica
     # Potentially useful, but not used in the present example
 
 ##########################
-## Main event
+## Export 3 data frames to three sheets in a single spreadsheet document.
+##
 ## https://www.r-bloggers.com/2019/08/creating-excel-workbooks-with-multiple-sheets-in-r/
-## See also
+## 
+## More immediately relevant
 ## https://www.r-bloggers.com/2022/02/export-data-frames-into-multiple-excel-sheets-in-r/
 
 openxlsx::write.xlsx(y, file = "./2023-03-17-excel-tabs/data.xlsx")
    # -- Creates an Excel file with three sheets, each with the name of the
    # -- corresponding data frame from the list
 
+##########################
+## Read 3 data frames from three sheets in a single spreadsheet document
+##
+## https://www.r-bloggers.com/2019/08/creating-excel-workbooks-with-multiple-sheets-in-r/

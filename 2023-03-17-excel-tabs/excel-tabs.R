@@ -2,7 +2,14 @@
 # excel-tabs.R
 # 
 # Intended as a vignette showing how to read in multiple tabs from an
-# Excel document, then recombine them into a single data frame. First 
+# Excel document, then recombine them into a single data frame. 
+#  1. Load and characterize internal iris data set 
+#  2. Divide Iris into separate data frames, one per species
+#  3. Export the data frames to sheets in a single spreadsheet doc
+#  4. Read back 3 data frames from 3 sheets in a single spreadsheet
+#  5. Join the data frames end-to-end
+#  6. Convert the list of 3 data frames to 3 separate data frames
+#
 # demonstrates storing multiple data frames to multiple sheets in a
 # spreadsheet in order to provide something to work with. 
 # 
@@ -16,8 +23,8 @@ library(purrr)
 # Remove data file, if present, so it can be re-created from scratch
 file.remove("./2023-03-17-excel-tabs/data.xlsx")
 
-#####################
-## Load the internal data set iris into the RStudio Environment
+#---------------------------------------------------------------------------#
+#--  1. Load and characterize internal iris data set ------------------------
 irises <- iris
 head(irises)
 #   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
@@ -34,8 +41,8 @@ unique(irises$Species)
 # Levels: setosa versicolor virginica
 
 
-#####################
-## Split Iris into separate data frames, one per species
+#---------------------------------------------------------------------------#
+#--  2. Divide Iris into separate data frames, one per species ------------- 
 
 ## See https://dplyr.tidyverse.org/reference/group_split.html
 ## Using base::split()
@@ -52,9 +59,9 @@ x <- irises %>%
 # -- Creates a list of three tibbles with one species each
 # -- Only identifies as x[[1]], x[[2]], and x[[3]]
 
-##########################
-## Export 3 data frames to three sheets in a single spreadsheet document.
-##
+#---------------------------------------------------------------------------#
+#-- 3. Export the data frames to sheets in a single spreadsheet doc ---------
+
 ## Working from a list of data frames, this is one short and simple function
 ## https://www.r-bloggers.com/2022/02/export-data-frames-into-multiple-excel-sheets-in-r/
 
@@ -62,11 +69,9 @@ openxlsx::write.xlsx(y, file = "./2023-03-17-excel-tabs/data.xlsx")
    # -- Creates an Excel file with three sheets, each with the name of the
    # -- corresponding data frame from the list
 
-##########################
-## Read 3 data frames from three sheets in a single spreadsheet document
-##
-## Reading the sheets back required either base::lapply() or purr::map()
 
+#---------------------------------------------------------------------------#
+#-- 4. Read back 3 data frames from 3 sheets in a single spreadsheet --------
 
 ## This r-blogger entry addresses how to approach this with lapply or with purr::map()
 ## https://www.r-bloggers.com/2022/07/read-data-from-multiple-excel-sheets-and-convert-them-to-individual-data-frames/
@@ -92,7 +97,33 @@ df_list2$setosa
 # 3          4.7         3.2          1.3         0.2 setosa 
     # data frames in the list are named
 
-##########################
+#---------------------------------------------------------------------------#
+#-- 5. Join the data frames end-to-end --------------------------------------
+
+## For greater depth, see also
+## https://www.r-bloggers.com/2021/08/r-a-combined-usage-of-split-lapply-and-do-call/
+
+# Join end-to-end using base::do.call
+irises2 <- do.call(rbind, df_list2)
+irises2
+# # A tibble: 150 × 5
+# Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+# *        <dbl>       <dbl>        <dbl>       <dbl> <chr>  
+# 1          5.1         3.5          1.4         0.2 setosa 
+# 2          4.9         3            1.4         0.2 setosa 
+# 3          4.7         3.2          1.3         0.2 setosa 
+
+  # went from a list of 3 50-row data frams to a 150-row data frame
+
+# Join end-to-end using dplyr::bind_rows
+irises3 <- bind_rows(df_list2)
+  # accomplishes the same thing, but bind_rows can have advantages
+  # See https://dplyr.tidyverse.org/reference/bind.html
+
+
+#---------------------------------------------------------------------------#
+#-- 6. Convert the list of 3 data frames to 3 separate data frames  --------
+
 ## Convert the list to three separate data frames 
 ## See https://stackoverflow.com/questions/13795526/return-elements-of-list-as-independent-objects-in-global-environment
 
@@ -104,4 +135,6 @@ list2env(df_list1,globalenv())
 # The list generated with purrr::map does work
 list2env(df_list2,globalenv())
 # This works
+
+
 

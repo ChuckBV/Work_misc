@@ -14,6 +14,14 @@ Desktop
 
 Create example scripts for commonly used plot types in ggplot2
 
+## 2023-03-17-excel-tabs
+
+Script and rmarkdown document showing how to divide the iris data set by the
+three species, write the three separate dataframes to three sheets (tabs) in
+and Excel document, read back the three sheets, then bind them end-to-end to
+reconstruct the original iris data set. Demonstrates use of tools from base R
+(do.call, lapply) and tidyverse (purr::map, dplyr::bind_rows)
+
 ## 2023-03-29-test-markdown-table
 
 There is no subdirectory for this entry. The objective is to test formatting

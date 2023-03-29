@@ -1,0 +1,57 @@
+---
+title: "Transform Dataframe to Markdown Table"
+output: html_document
+date: "2023-03-29"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Function to make a dataframe into a Markdown plot
+
+This is a direct appropriation of a blog post by Tomaz Kastrun. See:
+
+https://tomaztsql.wordpress.com/2023/03/26/little-useless-useful-r-functions-transforming-dataframe-to-markdown-table/ 
+
+The purpose is to transform a dataframe into a markdown table, which would then be displayed as a regular table if the markdown document is viewed in formatted form.
+
+The function is as follows:
+
+```{r}
+df_2_MD <- function(your_df){
+  cn <- as.character(names(your_df))
+  headr <- paste0(c("", cn),  sep = "|", collapse='')
+  sepr <- paste0(c('|', rep(paste0(c(rep('-',3), "|"), collapse=''),length(cn))), collapse ='')
+  st <- "|"
+    for (i in 1:nrow(your_df)){
+      for(j in 1:ncol(your_df)){
+        if (j%%ncol(your_df) == 0) {
+          st <- paste0(st, as.character(your_df[i,j]), "|", "\n", "" , "|", collapse = '')
+        } else {
+        st <- paste0(st, as.character(your_df[i,j]), "|", collapse = '')
+        }
+      }
+    }
+  fin <- paste0(c(headr, sepr, substr(st,1,nchar(st)-1)), collapse="\n")
+  cat(fin)
+}  
+```
+
+
+## Demostration of the function
+
+Get a small part of the iris data set for demonstration.
+
+```{r}
+short_iris <- iris[1:3,1:5]
+short_iris
+```
+
+Apply the function
+```{r iris}
+df_2_MD(short_iris)
+```
+For a demonstration of the utility of this output, see
+
+https://github.com/ChuckBV/Work_misc 

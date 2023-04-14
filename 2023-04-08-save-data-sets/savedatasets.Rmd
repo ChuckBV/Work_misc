@@ -2,7 +2,9 @@
 title: 'How to save (and load) datasets in R: an overview'
 author: "Sascha Wolfer"
 date: "2023-04-08"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}

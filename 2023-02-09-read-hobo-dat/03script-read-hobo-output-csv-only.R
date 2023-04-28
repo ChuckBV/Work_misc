@@ -85,30 +85,19 @@ dat_in %>%
 # <dbl> <dttm>             
 #   1    17 2023-04-23 00:02:03
 
-this_week <- dat_in %>% 
-  filter(epiweek(date_time_pst_pdt) == 17)
+these_weeks <- dat_in %>% 
+  filter(epiweek(date_time_pst_pdt) >= 16)
 
-p2 <- ggplot(this_week, aes(x = date_time_pst_pdt, y = deg_c)) +
+p3 <- ggplot(these_weeks, aes(x = date_time_pst_pdt, y = deg_c)) +
   geom_line() +
   labs(x = "",
        y = "Degree Celcius",
        caption = "Queue2 in H123") +
   theme_csb_halfwidth1()
 
-p2  
+p3  
   
-  ggplot(old, aes(x = date_time, y = deg_c)) +
-  geom_line() +
-  labs(title = "Temperature logger readings, 5 min intervals",
-       x = "",
-       y = "Degree Celcius",
-       caption = "Queue2 in H123") +
-  ylim(12.5,34) +
-  theme_csb_halfwidth1()
-
-p2
-
-ggsave(filename = "q2_last_week_2023_04_29.jpg", 
+ggsave(filename = "q2_last_2weeks_2023_04_29.jpg", 
        plot = p2, device = "jpg", 
        dpi = 300, width = 5.83, height = 5.83, units = "in")
 

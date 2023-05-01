@@ -98,24 +98,24 @@ old <- dat_in %>%
          Julian = yday(as.Date(dttime))) %>%
   group_by(Julian) %>% 
   summarise(nObs = n())
-tail(old) 
+tail() 
 
-old <- old %>%  # narrow to October
-  filter(ydate(as.Datedate_time) > 9)# & month(date_time) < 11)
+old <- dat_in %>%  # narrow to October
+  filter(yday(as.Date(date_time_pst_pdt)) > 117)# & month(date_time) < 11)
 
-old <- old %>% # narrow to first three days of October
-  filter(mday(date_time) < 4)
+# old <- old %>% # narrow to first three days of October
+#   filter(mday(date_time) < 4)
 
 #  Make and save the plot
 
-p2 <- ggplot(old, aes(x = date_time, y = deg_c)) +
+p2 <- ggplot(old, aes(x = date_time_pst_pdt, y = deg_c)) +
   geom_line() +
   labs(title = "Temperature logger readings, 5 min intervals",
        x = "",
        y = "Degree Celcius",
        caption = "Queue2 in H123") +
   ylim(12.5,34) +
-  theme_csb_fullwidth1()
+  theme_csb_halfwidth1()
 
 p2
 

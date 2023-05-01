@@ -7,7 +7,6 @@
 #===========================================================================#
 
 library(tidyverse)
-#library(readxl)
 library(janitor)
 
 ### Function to make plots look descent in printed form when printed at
@@ -40,7 +39,7 @@ theme_csb_halfwidth1 <- function(){
 #   Read Feb 2023 csv file for new environmental controller 
 #   Load data frame to Global Environment and clean
 
-dat_in <- read_csv("./2023-02-09-read-hobo-dat/Queue 2 2023-04-28 07_10_43 PDT (Data PDT).csv")
+dat_in <- read_csv("./2023-02-09-read-hobo-dat/Queue 1 2023-04-28 07_24_22 PDT (Data PDT).csv")
 dat_in <- clean_names(dat_in)
 dat_in
 
@@ -63,12 +62,12 @@ p1 <- ggplot(dat_in, aes(x = date_time_pst_pdt, y = deg_c)) +
   geom_line() +
   labs(x = "",
        y = "Degree Celcius",
-       caption = "Queue2 in H123") +
+       caption = "Queue1 in H123") +
   theme_csb_halfwidth1()
 
 p1
 
-ggsave(filename = "q2_last_2_months_2023_04_29.jpg", 
+ggsave(filename = "q1_last_2_months_2023_04_29.jpg", 
        plot = p1, device = "jpg", 
        dpi = 300, width = 2.83, height = 2.83, units = "in")
 

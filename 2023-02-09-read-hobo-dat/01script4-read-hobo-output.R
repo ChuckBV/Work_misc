@@ -2,8 +2,6 @@
 # script4-read-hobo-output.R
 # 2023-02-06
 #
-#
-#
 #===========================================================================#
 
 library(tidyverse)
@@ -40,7 +38,7 @@ theme_csb_halfwidth1 <- function(){
 #   Read Feb 2023 csv file for new environmental controller 
 #   Load data frame to Global Environment and clean
 
-dat_in <- read_csv("./2023-02-09-read-hobo-dat/Queue 2 2023-04-28 07_10_43 PDT (Data PDT).csv")
+dat_in <- read_csv("./2023-02-09-read-hobo-dat/Queue 2 2023-05-01 07_49_00 PDT (Data PDT).csv")
 dat_in <- clean_names(dat_in)
 dat_in
 
@@ -94,8 +92,16 @@ old <- old %>%
 
 # Select 3 days
 
+old <- dat_in %>% 
+  rename(dttime = date_time_pst_pdt) %>% 
+  mutate(Date = as.Date(dttime),
+         Julian = yday(as.Date(dttime))) %>%
+  group_by(Julian) %>% 
+  summarise(nObs = n())
+tail(old) 
+
 old <- old %>%  # narrow to October
-  filter(month(date_time) > 9 & month(date_time) < 11)
+  filter(ydate(as.Datedate_time) > 9)# & month(date_time) < 11)
 
 old <- old %>% # narrow to first three days of October
   filter(mday(date_time) < 4)

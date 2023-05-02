@@ -38,12 +38,12 @@ theme_csb_halfwidth1 <- function(){
 #   Read Feb 2023 csv file for new environmental controller 
 #   Load data frame to Global Environment and clean
 
-dat_in <- read_csv("./2023-02-09-read-hobo-dat/Queue 2 2023-05-01 07_49_00 PDT (Data PDT).csv")
+dat_in <- read_csv("./2023-02-09-read-hobo-dat/Queue 2 2023-05-02 06_34_22 PDT (Data PDT).csv")
 dat_in <- clean_names(dat_in)
 dat_in
 
 
-dat_in$date_time_pst_pdt <- as.POSIXct(mdy_hms(dat_in$date_time_pst_pdt))
+dat_in$date_time_pst_pdt <- as.POSIXct(mdy_hm(dat_in$date_time_pst_pdt))
 
 dat_in <- dat_in %>% 
   rename(deg_c = ch_1_temperature_c,
@@ -93,15 +93,14 @@ old <- old %>%
 # Select 3 days
 
 old <- dat_in %>% 
-  rename(dttime = date_time_pst_pdt) %>% 
-  mutate(Date = as.Date(dttime),
-         Julian = yday(as.Date(dttime))) %>%
+  mutate(Date = as.Date(date_time_pst_pdt),
+         Julian = yday(as.Date(date_time_pst_pdt))) %>%
   group_by(Julian) %>% 
   summarise(nObs = n())
-tail() 
+tail(old) 
 
 old <- dat_in %>%  # narrow to October
-  filter(yday(as.Date(date_time_pst_pdt)) > 117)# & month(date_time) < 11)
+  filter(yday(as.Date(date_time_pst_pdt)) > 120)# & month(date_time) < 11)
 
 # old <- old %>% # narrow to first three days of October
 #   filter(mday(date_time) < 4)
@@ -114,7 +113,7 @@ p2 <- ggplot(old, aes(x = date_time_pst_pdt, y = deg_c)) +
        x = "",
        y = "Degree Celcius",
        caption = "Queue2 in H123") +
-  ylim(12.5,34) +
+  ylim(25,28) +
   theme_csb_halfwidth1()
 
 p2

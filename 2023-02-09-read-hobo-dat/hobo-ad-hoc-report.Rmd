@@ -41,8 +41,7 @@ list.dirs()
 ```
 
 ```{r }
-dat_in <- read_csv("Queue 2 2023-04-28 07_10_43 PDT (Data PDT).csv",
-                   show_col_types = FALSE)
+dat_in <- read_csv("Queue 1 2023-07-19 06_13_48 PDT (Data PDT).csv")
 dat_in
 ```
 

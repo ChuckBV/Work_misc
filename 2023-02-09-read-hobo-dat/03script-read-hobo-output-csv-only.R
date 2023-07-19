@@ -39,7 +39,7 @@ theme_csb_halfwidth1 <- function(){
 #   Read Feb 2023 csv file for new environmental controller 
 #   Load data frame to Global Environment and clean
 
-dat_in <- read_csv("./2023-02-09-read-hobo-dat/Queue 1 2023-04-28 07_24_22 PDT (Data PDT).csv")
+dat_in <- read_csv("./2023-02-09-read-hobo-dat/Queue 2 2023-07-19 06_13_19 PDT (Data PDT).csv")
 dat_in <- clean_names(dat_in)
 dat_in
 
@@ -67,8 +67,8 @@ p1 <- ggplot(dat_in, aes(x = date_time_pst_pdt, y = deg_c)) +
 
 p1
 
-ggsave(filename = "q1_last_2_months_2023_04_29.jpg", 
-       plot = p1, device = "jpg", 
+ggsave(filename = "q2_last_2_months_2023_06_19.jpg", 
+       plot = p1, device = "jpg", path = "./2023-02-09-read-hobo-dat",
        dpi = 300, width = 2.83, height = 2.83, units = "in")
 
 # Select the previous week
@@ -81,22 +81,22 @@ dat_in %>%
   filter(wk == max(wk))
 # # A tibble: 1 × 2
 # wk first_reading      
-# <dbl> <dttm>             
-#   1    17 2023-04-23 00:02:03
+#   <dbl> <dttm>             
+# 1    29 2023-07-16 00:04:22
 
 these_weeks <- dat_in %>% 
-  filter(epiweek(date_time_pst_pdt) >= 16)
+  filter(epiweek(date_time_pst_pdt) >= 24)
 
 p3 <- ggplot(these_weeks, aes(x = date_time_pst_pdt, y = deg_c)) +
   geom_line() +
   labs(x = "",
        y = "Degree Celcius",
-       caption = "Queue2 in H123") +
+       caption = "Queue1 in H123") +
   theme_csb_halfwidth1()
 
 p3  
   
-ggsave(filename = "q2_last_2weeks_2023_04_29.jpg", 
+ggsave(filename = "q1_last_2weeks_2023_07_19.jpg", 
        plot = p2, device = "jpg", 
        dpi = 300, width = 5.83, height = 5.83, units = "in")
 

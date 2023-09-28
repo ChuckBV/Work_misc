@@ -1,6 +1,6 @@
-﻿# Source" https://docs.google.com/document/d/1SXGvoayjSfP7Jm5zPKG1rFJIk_4X4FerJIa_HSFMlSU/edit
+# Source" https://docs.google.com/document/d/1SXGvoayjSfP7Jm5zPKG1rFJIk_4X4FerJIa_HSFMlSU/edit
 
-setwd("C:/Users/Brandon_yeo/Desktop/GoogleTut")
+#setwd("C:/Users/Brandon_yeo/Desktop/GoogleTut")
 
 
 #install.packages(c("googlesheets4", "googledrive"))

@@ -1,11 +1,12 @@
 #===========================================================================#
-# script4-read-hobo-output.R
+# 03script-read-hobo-output.R
 # 2023-02-06
+#
+#
 #
 #===========================================================================#
 
 library(tidyverse)
-#library(readxl)
 library(janitor)
 
 ### Function to make plots look descent in printed form when printed at
@@ -38,12 +39,11 @@ theme_csb_halfwidth1 <- function(){
 #   Read Feb 2023 csv file for new environmental controller 
 #   Load data frame to Global Environment and clean
 
-dat_in <- read_csv("./2023-02-09-read-hobo-dat/Queue 2 2023-05-02 06_34_22 PDT (Data PDT).csv")
+dat_in <- read_csv("./2023-02-09-read-hobo-dat/Queue 2 2023-07-19 06_13_19 PDT (Data PDT).csv")
 dat_in <- clean_names(dat_in)
 dat_in
 
-
-dat_in$date_time_pst_pdt <- as.POSIXct(mdy_hm(dat_in$date_time_pst_pdt))
+dat_in$date_time_pst_pdt <- as.POSIXct(mdy_hms(dat_in$date_time_pst_pdt))
 
 dat_in <- dat_in %>% 
   rename(deg_c = ch_1_temperature_c,
@@ -60,17 +60,47 @@ dat_in
 # Plot
 p1 <- ggplot(dat_in, aes(x = date_time_pst_pdt, y = deg_c)) +
   geom_line() +
-  labs(title = "Temperature logger readings, 10 s intervals",
-       x = "",
+  labs(x = "",
        y = "Degree Celcius",
-       caption = "Queue2 in H123") +
+       caption = "Queue1 in H123") +
   theme_csb_halfwidth1()
 
 p1
 
-ggsave(filename = "hobo_plot_2023_02_06.jpg", 
-       plot = p1, device = "jpg", 
+ggsave(filename = "q2_last_2_months_2023_06_19.jpg", 
+       plot = p1, device = "jpg", path = "./2023-02-09-read-hobo-dat",
+       dpi = 300, width = 2.83, height = 2.83, units = "in")
+
+# Select the previous week
+
+### Examine epiweeks in the data
+dat_in %>% 
+  mutate(wk = epiweek(date_time_pst_pdt)) %>% 
+  group_by(wk) %>% 
+  summarise(first_reading = min(date_time_pst_pdt)) %>% 
+  filter(wk == max(wk))
+# # A tibble: 1 × 2
+# wk first_reading      
+#   <dbl> <dttm>             
+# 1    29 2023-07-16 00:04:22
+
+these_weeks <- dat_in %>% 
+  filter(epiweek(date_time_pst_pdt) >= 24)
+
+p3 <- ggplot(these_weeks, aes(x = date_time_pst_pdt, y = deg_c)) +
+  geom_line() +
+  labs(x = "",
+       y = "Degree Celcius",
+       caption = "Queue1 in H123") +
+  theme_csb_halfwidth1()
+
+p3  
+  
+ggsave(filename = "q1_last_2weeks_2023_07_19.jpg", 
+       plot = p2, device = "jpg", 
        dpi = 300, width = 5.83, height = 5.83, units = "in")
+
+
 
 #-------------------------------------------------------------------#
 #-- READ EXCEL AND PLOT TEMPERATURE ONLY ---------------------------
@@ -92,29 +122,22 @@ old <- old %>%
 
 # Select 3 days
 
-old <- dat_in %>% 
-  mutate(Date = as.Date(date_time_pst_pdt),
-         Julian = yday(as.Date(date_time_pst_pdt))) %>%
-  group_by(Julian) %>% 
-  summarise(nObs = n())
-tail(old) 
+old <- old %>%  # narrow to October
+  filter(month(date_time) > 9 & month(date_time) < 11)
 
-old <- dat_in %>%  # narrow to October
-  filter(yday(as.Date(date_time_pst_pdt)) > 120)# & month(date_time) < 11)
-
-# old <- old %>% # narrow to first three days of October
-#   filter(mday(date_time) < 4)
+old <- old %>% # narrow to first three days of October
+  filter(mday(date_time) < 4)
 
 #  Make and save the plot
 
-p2 <- ggplot(old, aes(x = date_time_pst_pdt, y = deg_c)) +
+p2 <- ggplot(old, aes(x = date_time, y = deg_c)) +
   geom_line() +
   labs(title = "Temperature logger readings, 5 min intervals",
        x = "",
        y = "Degree Celcius",
        caption = "Queue2 in H123") +
-  ylim(25,28) +
-  theme_csb_halfwidth1()
+  ylim(12.5,34) +
+  theme_csb_fullwidth1()
 
 p2
 

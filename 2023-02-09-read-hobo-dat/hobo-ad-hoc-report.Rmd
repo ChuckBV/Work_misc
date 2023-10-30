@@ -1,0 +1,116 @@
+---
+title: "Reading, Selected Hobo Temperature Logger"
+author: "Chuck Burks"
+date: "2023-04-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+#library(readxl)
+library(janitor)
+theme_csb_halfwidth1 <- function(){
+  theme_bw() +
+    theme(axis.text.x = element_text(color = "black", size = 10),
+          axis.text.y = element_text(color = "black", size = 10),
+          axis.title.x = element_text(color = "black", size = 10),
+          axis.title.y = element_text(color = "black", size = 10),
+          legend.title = element_text(color = "black", size = 10),
+          legend.text = element_text(color = "black", size = 9)
+    )
+}
+```
+
+## Read in Data
+
+This document serves as a readable auto-reminder about how to fish necessary
+information out of a Hobotemp data file. Here we are examining a file from 
+a walk-in environmental chamber that started to have worrisome heating issues.
+
+It is necessary to play with the directories a bit to get the correct file and 
+file location. That can be done using autocomplete features in R/RStudio. Most 
+of the needed functions are loaded with the tidyverse mega-library. The
+clean_names() function of the janitor packages is also used to deal with messy
+default variable names.
+
+
+```{r }
+getwd()
+list.dirs()
+```
+
+```{r }
+dat_in <- read_csv("Queue 1 2023-07-19 06_13_48 PDT (Data PDT).csv")
+dat_in
+```
+
+This throws a warning, but it works. Additional clean-up steps are applied
+
+```{r }
+dat_in <- clean_names(dat_in)
+dat_in
+```
+
+```{r }
+dat_in$date_time_pst_pdt <- as.POSIXct(mdy_hms(dat_in$date_time_pst_pdt))
+
+dat_in <- dat_in %>% 
+  rename(deg_c = 3,
+         rh = ch_2_rh_percent)
+
+dat_in
+```
+
+Also examining the end of the file
+
+```{r, echo=FALSE }
+tail(dat_in)
+```
+
+## Plot tempertures over the entire time frame
+
+For Rmarkdown the graphic is not saved, but the code in the accompanying 
+R script includes formatting suitable for a journal 1 column (half page width)
+format, in part because I think that also sizes well if sent on a cell phone.
+
+```{r}
+ggplot(dat_in, aes(x = date_time_pst_pdt, y = deg_c)) +
+  geom_line() +
+  labs(x = "",
+       y = "Degree Celcius",
+       caption = "Queue2 in H123") +
+  theme_csb_halfwidth1()
+```
+This output indicates that the temperature held steady for weeks, and started 
+to spike more recently. I want to expand the X axis only within this
+time frame. I will use therefore use lubridate functions (loads with tidyverse)
+like month(), epiweek(), wday(), etc. to narrow the data set to times of 
+interest. In this case we start by examining the last few epiweeks (weeks of 
+the year, see ?epiweek)
+
+```{r}
+dat_in %>% 
+  mutate(wk = epiweek(date_time_pst_pdt)) %>% 
+  group_by(wk) %>% 
+  summarise(first_reading = min(date_time_pst_pdt)) %>% 
+  tail(.)
+```
+
+The data end with epiweek 17, and that captures the last 5 or so days of data.
+
+```{r}
+dat_in %>% 
+  filter(epiweek(date_time_pst_pdt) == 17) %>% 
+  ggplot(., aes(x = date_time_pst_pdt, y = deg_c)) +
+  geom_line() +
+  labs(x = "",
+       y = "Degree Celcius",
+       caption = "Queue2 in H123") +
+  theme_csb_halfwidth1()
+```
+So I have had the spiking problem for at least a week, but not a month. 
+I can save these charts, pass them to somewhere that I can get them into the 
+camera roll on my phone, and that way share them with maintenance and 
+contractors in a quickly readable format. See "03script4-read-hobo-output-csv.R
+for the ggsave code.

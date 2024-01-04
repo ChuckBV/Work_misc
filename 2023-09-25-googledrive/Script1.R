@@ -11,6 +11,9 @@ library(googlesheets4)
 
 ### References
 # YouTube -- Googledrive and Googlesheet4 in R | A RStudio Tutorial
+#   Video and accompanying script from "Liquid Brain", a project by Brandon Yeo 
+#   and Lindsey Foong
+#   
 # https://youtu.be/Bdvqtb7fsH0?feature=shared
 #
 # Script in Google Doc -- Googledrive and Googlesheet4 in R

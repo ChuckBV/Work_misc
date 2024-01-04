@@ -80,7 +80,7 @@ p4 <- ggplot(dat, aes(x = date_time_pst_pdt, y = deg_c)) +
   labs(title = "Temperature logger readings, 10 s intervals",
        x = "",
        y = "Degree Celcius",
-       caption = "Queue2 in H123") +
+       caption = "Queue1 in H123") +
   theme_csb_halfwidth1()
 
 p4

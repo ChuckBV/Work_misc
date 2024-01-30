@@ -92,7 +92,7 @@ ggsave(filename = "hobo_plot_2024_01_02.jpg",
        dpi = 300, width = 5.83, height = 5.83, units = "in")
 
 #------------------------------------------------------------------------#
-#-- READ CSV AND PLOT TEMPERATURE ONLY -----------------------------------
+#-- READ CSV AND PLOT TEMPERATURE + RH -----------------------------------
 
 # 2024-01-30
 
@@ -121,17 +121,18 @@ glimpse(dat1)
 #looks good
 
 
-# Plot
-p5 <- ggplot(dat1, aes(x = date_time_pst, y = deg_c)) +
+# Plot Humidity
+p6 <- ggplot(dat1, aes(x = date_time_pst, y = rh)) +
   geom_line() +
-  labs(title = "Temperature logger readings, 10 s intervals",
+  labs(title = "Relative humidity logger readings, 10 s intervals",
        x = "",
-       y = "Degree Celcius",
+       y = "Relative Humidity",
        caption = "Queue1 in H123") +
   theme_csb_halfwidth1()
 
-p5
+p6
 
-ggsave(filename = "hobo_plot_2024_01_30.jpg", 
-       plot = p5, device = "jpg", 
+ggsave(filename = "hobo_plot_2024_01_30_.jpg", 
+       plot = p6, device = "jpg", 
        dpi = 300, width = 5.83, height = 5.83, units = "in")
+

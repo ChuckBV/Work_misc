@@ -25,3 +25,4 @@ vignettes/*.pdf
 *.utf8.md
 # R Environment Variables
 .Renviron
+hobo_plot_2024_01_02.jpeg

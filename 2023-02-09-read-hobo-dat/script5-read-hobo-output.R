@@ -1,6 +1,6 @@
 #===========================================================================#
 # script5-read-hobo-output.R
-# 2024-01-02
+# 2024-01
 #
 #===========================================================================#
 
@@ -36,6 +36,8 @@ theme_csb_halfwidth1 <- function(){
 
 #------------------------------------------------------------------------#
 #-- READ CSV AND PLOT TEMPERATURE ONLY -----------------------------------
+
+# 2024-01-02
 
 dat <- read.csv("./2023-02-09-read-hobo-dat/Queue 1 2024-01-02 14_19_50 PST (Data PST)(2).xlsx - Data.csv")
 
@@ -87,4 +89,49 @@ p4
 
 ggsave(filename = "hobo_plot_2024_01_02.jpg", 
        plot = p4, device = "jpg", 
+       dpi = 300, width = 5.83, height = 5.83, units = "in")
+
+#------------------------------------------------------------------------#
+#-- READ CSV AND PLOT TEMPERATURE ONLY -----------------------------------
+
+# 2024-01-30
+
+dat1 <- read.csv("./Queue 1 2024-01-29 07_56_34 PST (Data PST).xlsx - Data.csv")
+
+dat1 <- clean_names(dat1)
+
+glimpse(dat1)
+# Rows: 3,741
+# Columns: 5
+# $ x                  <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,…
+# $ date_time_pst      <chr> "01/03/2024 08:34:53", "01/03/2024 08:44:53", "01/03/2024 08:5…
+# $ ch_1_temperature_c <dbl> 30.24, 28.49, 28.02, 26.70, 26.38, 26.38, 26.45, 26.57, 26.72,…
+# $ ch_2_rh            <dbl> 44.800, 46.167, 47.852, 45.313, 51.880, 50.854, 50.928, 50.830…
+# $ dew_point_c        <dbl> 16.94, 15.82, 15.96, 13.91, 15.72, 15.41, 15.49, 15.57, 15.67,…
+
+# change date_time_pst_pdt to date
+
+dat1$date_time_pst <- mdy_hms(dat1$date_time_pst)
+
+dat1 <- dat1 %>% 
+  rename(deg_c = ch_1_temperature_c,
+         rh = ch_2_rh)
+
+glimpse(dat1)
+#looks good
+
+
+# Plot
+p5 <- ggplot(dat1, aes(x = date_time_pst, y = deg_c)) +
+  geom_line() +
+  labs(title = "Temperature logger readings, 10 s intervals",
+       x = "",
+       y = "Degree Celcius",
+       caption = "Queue1 in H123") +
+  theme_csb_halfwidth1()
+
+p5
+
+ggsave(filename = "hobo_plot_2024_01_30.jpg", 
+       plot = p5, device = "jpg", 
        dpi = 300, width = 5.83, height = 5.83, units = "in")

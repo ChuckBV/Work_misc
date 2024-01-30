@@ -35,7 +35,7 @@ theme_csb_halfwidth1 <- function(){
 
 
 #------------------------------------------------------------------------#
-#-- READ CSV AND PLOT TEMPERATURE ONLY -----------------------------------
+#-- 1. Q1 H123 2024-01-02 update -----------------------------------------
 
 # 2024-01-02
 
@@ -92,7 +92,7 @@ ggsave(filename = "hobo_plot_2024_01_02.jpg",
        dpi = 300, width = 5.83, height = 5.83, units = "in")
 
 #------------------------------------------------------------------------#
-#-- READ CSV AND PLOT TEMPERATURE + RH -----------------------------------
+#-- 2. Q1 H123 2024-01-30 update -----------------------------------------
 
 # 2024-01-30
 
@@ -120,6 +120,20 @@ dat1 <- dat1 %>%
 glimpse(dat1)
 #looks good
 
+# Plot Temperature
+p5 <- ggplot(dat1, aes(x = date_time_pst, y = deg_c)) +
+  geom_line() +
+  labs(title = "Temperature logger readings, 10 s intervals",
+       x = "",
+       y = "Degree Celcius",
+       caption = "Queue1 in H123") +
+  theme_csb_halfwidth1()
+
+p5
+
+ggsave(filename = "hobo_plot_2024_01_30.jpg", 
+       plot = p5, device = "jpg", 
+       dpi = 300, width = 5.83, height = 5.83, units = "in")
 
 # Plot Humidity
 p6 <- ggplot(dat1, aes(x = date_time_pst, y = rh)) +
@@ -136,3 +150,64 @@ ggsave(filename = "hobo_plot_2024_01_30_.jpg",
        plot = p6, device = "jpg", 
        dpi = 300, width = 5.83, height = 5.83, units = "in")
 
+#------------------------------------------------------------------------#
+#-- 3. Q2 H123 2024-01-02 update -----------------------------------------
+
+dat2 <- read.csv("./Queue 2 2024-01-30 12_57_47 PST (Data PST).xlsx - Data.csv")
+
+dat2 <- clean_names(dat2)
+
+glimpse(dat2)
+# Rows: 28,127
+# Columns: 5
+# $ x                  <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,…
+# $ date_time_pst_pdt  <chr> "07/19/2023 06:14:47", "07/19/2023 06:24:47", "07/19/2023 06:3…
+# $ ch_1_temperature_c <dbl> 26.99, 27.19, 27.41, 26.08, 26.43, 26.65, 26.89, 27.11, 27.33,…
+# $ ch_2_rh            <dbl> 59.180, 58.960, 58.618, 62.427, 60.205, 57.813, 57.324, 56.763…
+# $ dew_point_c        <dbl> 18.37, 18.49, 18.61, 18.36, 18.11, 17.68, 17.76, 17.81, 17.82,…
+
+# change date_time_pst_pdt to date
+
+dat2$date_time_pst_pdt <- mdy_hms(dat2$date_time_pst_pdt)
+
+dat2 <- dat2 %>% 
+  rename(deg_c = ch_1_temperature_c,
+         rh = ch_2_rh)
+
+glimpse(dat2)
+#looks good
+
+# Filter last month
+
+dat2 <- dat2 %>% 
+  filter(x >= 23874)
+
+# Plot
+p7 <- ggplot(dat2, aes(x = date_time_pst_pdt, y = deg_c)) +
+  geom_line() +
+  labs(title = "Temperature logger readings, 10 s intervals",
+       x = "",
+       y = "Degree Celcius",
+       caption = "Queue2 in H123") +
+  theme_csb_halfwidth1()
+
+p7
+
+ggsave(filename = "hobo_plot_2024_01_30_q2.jpg", 
+       plot = p7, device = "jpg", 
+       dpi = 300, width = 5.83, height = 5.83, units = "in")
+
+# Plot Humidity
+p8 <- ggplot(dat2, aes(x = date_time_pst_pdt, y = rh)) +
+  geom_line() +
+  labs(title = "Relative humidity logger readings, 10 s intervals",
+       x = "",
+       y = "Relative Humidity",
+       caption = "Queue2 in H123") +
+  theme_csb_halfwidth1()
+
+p8
+
+ggsave(filename = "hobo_plot_2024_01_30_q2_.jpg", 
+       plot = p8, device = "jpg", 
+       dpi = 300, width = 5.83, height = 5.83, units = "in")

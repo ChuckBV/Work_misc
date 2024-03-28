@@ -78,7 +78,7 @@ dat <- dat %>%
   select(1:5)
 
 # Plot Temperature
-p13 <- ggplot(dat, aes(x = date_time_pst_pdt, y = deg_c)) +
+p13 <- ggplot(dat, aes(x = date_time_pst_pdt, y = deg_c, group = 1)) +
   geom_line() +
   labs(title = "Temperature logger readings, 10 s intervals",
        x = "",
@@ -88,12 +88,12 @@ p13 <- ggplot(dat, aes(x = date_time_pst_pdt, y = deg_c)) +
 
 p13
 
-ggsave(filename = "hobo_plot_2024_03_04__q1.jpg", 
-       plot = p9, device = "jpg", 
+ggsave(filename = "hobo_plot_2024_03_28__q1.jpg", 
+       plot = p13, device = "jpg", 
        dpi = 300, width = 5.83, height = 5.83, units = "in")
 
 # Plot Humidity
-p14 <- ggplot(dat, aes(x = date_time_pst_pdt, y = rh)) +
+p14 <- ggplot(dat, aes(x = date_time_pst_pdt, y = rh, group = 1)) +
   geom_line() +
   labs(title = "Relative humidity logger readings, 10 s intervals",
        x = "",
@@ -103,8 +103,8 @@ p14 <- ggplot(dat, aes(x = date_time_pst_pdt, y = rh)) +
 
 p14
 
-ggsave(filename = "hobo_plot_2024_03_04_q1.jpg", 
-       plot = p10, device = "jpg", 
+ggsave(filename = "hobo_plot_2024_03_28_q1.jpg", 
+       plot = p14, device = "jpg", 
        dpi = 300, width = 5.83, height = 5.83, units = "in")
 
 
@@ -144,7 +144,7 @@ dat1 <- dat1 %>%
   select(1:5)
 
 # Plot Temperature
-p15 <- ggplot(dat1, aes(x = date_time_pst_pdt, y = deg_c)) +
+p15 <- ggplot(dat1, aes(x = date_time_pst_pdt, y = deg_c, group = 1)) +
   geom_line() +
   labs(title = "Temperature logger readings, 10 s intervals",
        x = "",
@@ -154,13 +154,13 @@ p15 <- ggplot(dat1, aes(x = date_time_pst_pdt, y = deg_c)) +
 
 p15
 
-ggsave(filename = "hobo_plot_2024_03_04_q2.jpg", 
-       plot = p11, device = "jpg", 
+ggsave(filename = "hobo_plot_2024_03_28_q2.jpg", 
+       plot = p15, device = "jpg", 
        dpi = 300, width = 5.83, height = 5.83, units = "in")
 
 # Plot Humidity
-p16 <- ggplot(dat1, aes(x = date_time_pst_pdt, y = rh)) +
-  geom_line() +
+p16 <- ggplot(dat1, aes(x = date_time_pst_pdt, y = rh, group = 1)) +
+  geom_line(na.rm = T) +
   labs(title = "Relative humidity logger readings, 10 s intervals",
        x = "",
        y = "Relative Humidity",
@@ -169,7 +169,7 @@ p16 <- ggplot(dat1, aes(x = date_time_pst_pdt, y = rh)) +
 
 p16
 
-ggsave(filename = "hobo_plot_2024_03_04__q2.jpg", 
-       plot = p12, device = "jpg", 
+ggsave(filename = "hobo_plot_2024_03_28__q2.jpg", 
+       plot = p16, device = "jpg", 
        dpi = 300, width = 5.83, height = 5.83, units = "in")
 
